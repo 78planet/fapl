@@ -19,7 +19,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -30,7 +30,20 @@ public class Comment {
     private User user;
 
     private String content;
-    private Integer hierarchy;
-    private Integer group_id;
-    private Integer order;
+
+    private Long hierarchy;
+
+    private Long groupId;
+
+    private Long orderNum;
+
+    public Comment(Post post, User user, String content, Long hierarchy, Long groupId,
+        Long orderNum) {
+        this.post = post;
+        this.user = user;
+        this.content = content;
+        this.hierarchy = hierarchy;
+        this.groupId = groupId;
+        this.orderNum = orderNum;
+    }
 }

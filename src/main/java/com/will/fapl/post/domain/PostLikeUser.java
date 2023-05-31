@@ -1,4 +1,4 @@
-package com.will.fapl.like.domain;
+package com.will.fapl.post.domain;
 
 import com.will.fapl.post.domain.Post;
 import com.will.fapl.user.domain.User;
@@ -19,7 +19,7 @@ public class PostLikeUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -29,4 +29,3 @@ public class PostLikeUser {
     @JoinColumn(name = "user_id")
     private User user;
 }
-

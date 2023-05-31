@@ -1,7 +1,7 @@
 package com.will.fapl.user.domain;
 
 import com.will.fapl.common.model.BaseEntity;
-import com.will.fapl.follow.domain.Follow;
+import com.will.fapl.post.domain.PostLikeUser;
 import com.will.fapl.point.domain.Point;
 import com.will.fapl.post.domain.Post;
 import com.will.fapl.user.domain.vo.Email;
@@ -30,7 +30,7 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Embedded
     private Email email;
@@ -42,7 +42,7 @@ public class User extends BaseEntity {
     private NickName nickName;
 
     @ManyToOne
-    @JoinColumn(name = "grade")
+    @JoinColumn(name = "grade_id")
     private Grade grade;
 
     private String profileImage;
@@ -50,11 +50,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "followingUser")
-    private List<Follow> followings = new ArrayList<>();
-
-    @OneToMany(mappedBy = "followedUser")
-    private List<Follow> followers = new ArrayList<>();
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<PostLikeUser> postLikeUsers = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "point_id")
@@ -84,14 +81,6 @@ public class User extends BaseEntity {
 
     public void addPost(Post post) {
         this.posts.add(post);
-    }
-
-    public void addFollowing(Follow follow) {
-        this.followings.add(follow);
-    }
-
-    public void addFollowers(Follow follow) {
-        this.followers.add(follow);
     }
 
     public void changePoint(Point point) {

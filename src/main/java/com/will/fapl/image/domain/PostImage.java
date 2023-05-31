@@ -18,11 +18,16 @@ public class PostImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 
     private String imageUrl;
+
+    public PostImage(Post post, String imageUrl) {
+        this.post = post;
+        this.imageUrl = imageUrl;
+    }
 }

@@ -42,7 +42,7 @@ CREATE TABLE follow
 (
     id                bigint NOT NULL auto_increment,
     following_user_id bigint NOT NULL,
-    followed_user_id  bigint NOT NULL,
+    follower_user_id  bigint NOT NULL,
     PRIMARY KEY (id)
 ) engine = InnoDB
   default charset = utf8mb4;
@@ -51,8 +51,7 @@ ALTER TABLE follow
     ADD FOREIGN KEY (following_user_id) REFERENCES user (id);
 
 ALTER TABLE follow
-    ADD FOREIGN KEY (followed_user_id) REFERENCES user (id);
-
+    ADD FOREIGN KEY (follower_user_id) REFERENCES user (id);
 
 
 CREATE TABLE post
@@ -115,7 +114,7 @@ CREATE TABLE hashtag
 (
     id      bigint       NOT NULL auto_increment,
     post_id bigint,
-    hashtag varchar(255) NOT NULL,
+    hashtag_id bigint NOT NULL,
     PRIMARY KEY (id)
 ) engine = InnoDB
   default charset = utf8mb4;

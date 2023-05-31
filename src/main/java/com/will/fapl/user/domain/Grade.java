@@ -18,4 +18,8 @@ public class Grade {
     private Integer id;
 
     private String grade;
+
+    public Grade(String grade) {
+        this.grade = grade;
+    }
 }

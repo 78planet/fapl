@@ -1,11 +1,11 @@
 package com.will.fapl.post.domain;
 
+import static java.util.stream.Collectors.toList;
+
 import com.will.fapl.comment.domain.Comment;
 import com.will.fapl.common.model.BaseEntity;
-import com.will.fapl.hashtag.domain.HashTagList;
+import com.will.fapl.image.domain.PostImage;
 import com.will.fapl.image.domain.PostImageList;
-import com.will.fapl.like.domain.PostDislikeUser;
-import com.will.fapl.like.domain.PostLikeUser;
 import com.will.fapl.user.domain.User;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -18,6 +18,7 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,7 +29,7 @@ public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -36,24 +37,44 @@ public class Post extends BaseEntity {
 
     private String content;
 
-    private Integer like_cnt;
+    private Long likeCnt;
 
-    private Integer dislike_cnt;
+    private Long dislikeCnt;
+
+    @Embedded
+    private PostImageList postImageList;
+
+    @Embedded
+    private PostHashTagList hashTagList;
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
-
-    @Embedded
-    private PostImageList postImages;
-
-    @Embedded
-    private HashTagList hashTags;
 
     @OneToMany(mappedBy = "post")
     private List<PostLikeUser> likedUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
     private List<PostDislikeUser> dislikedUsers = new ArrayList<>();
+
+    @Builder
+    public Post(User user, String content, Long likeCnt, Long dislikeCnt, List<Comment> comments,
+                    List<String> postImages, List<PostLikeUser> postLikeUsers, List<PostDislikeUser> postDislikeUsers) {
+        this.user = user;
+        this.user.addPost(this);
+        this.content = content;
+        this.likeCnt = likeCnt;
+        this.dislikeCnt = dislikeCnt;
+        this.postImageList = new PostImageList(convertToPostImages(postImages));
+        this.comments = comments;
+        this.likedUsers = postLikeUsers;
+        this.dislikedUsers = postDislikeUsers;
+    }
+
+    private List<PostImage> convertToPostImages(List<String> imageUrls) {
+        return imageUrls.stream()
+            .map(imageUrl -> new PostImage(this, imageUrl))
+            .collect(toList());
+    }
 
     public void changeContent(String content) {
         this.content = content;

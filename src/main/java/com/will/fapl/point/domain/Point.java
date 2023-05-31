@@ -1,5 +1,7 @@
 package com.will.fapl.point.domain;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.will.fapl.user.domain.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,10 +19,15 @@ public class Point {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "point")
     private User user;
 
-    private Integer point;
+    private Long point;
+
+    public Point(Long point) {
+        checkArgument(0 <= point, "point는 양수만 가능합니다.");
+        this.point = point;
+    }
 }
