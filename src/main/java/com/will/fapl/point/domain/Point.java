@@ -3,6 +3,8 @@ package com.will.fapl.point.domain;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.will.fapl.user.domain.User;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,21 +15,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Entity
+@Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Point {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "point", nullable = false)
+    private Long value;
 
-    @OneToOne(mappedBy = "point")
-    private User user;
-
-    private Long point;
-
-    public Point(Long point) {
-        checkArgument(0 <= point, "point는 양수만 가능합니다.");
-        this.point = point;
+    public Point(Long value) {
+        checkArgument(0 <= value, "point는 양수만 가능합니다.");
+        this.value = value;
     }
 }
