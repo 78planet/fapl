@@ -1,25 +1,15 @@
 package com.will.fapl.user.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Grade {
+public enum Grade {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    BRONZE(1), SILVER(2), GOLD(3);
 
-    private String grade;
+    private final Integer code;
 
-    public Grade(String grade) {
-        this.grade = grade;
+    Grade(Integer code) {
+        this.code = code;
     }
 }

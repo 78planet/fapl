@@ -4,18 +4,17 @@ import com.will.fapl.common.model.BaseEntity;
 import com.will.fapl.post.domain.PostLikeUser;
 import com.will.fapl.point.domain.Point;
 import com.will.fapl.post.domain.Post;
+import com.will.fapl.user.domain.converter.GradeConverter;
 import com.will.fapl.user.domain.vo.Email;
 import com.will.fapl.user.domain.vo.NickName;
 import com.will.fapl.user.domain.vo.Password;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -41,8 +40,7 @@ public class User extends BaseEntity {
     @Embedded
     private NickName nickName;
 
-    @ManyToOne
-    @JoinColumn(name = "grade_id")
+    @Convert(converter = GradeConverter.class)
     private Grade grade;
 
     private String profileImage;
@@ -53,8 +51,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<PostLikeUser> postLikeUsers = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "point_id")
+    @Embedded
     private Point point;
 
     @Builder
