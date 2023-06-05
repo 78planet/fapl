@@ -1,41 +1,17 @@
-CREATE TABLE grade
-(
-    id    integer      NOT NULL auto_increment,
-    grade varchar(255) NOT NULL,
-    PRIMARY KEY (id)
-) engine = InnoDB
-  default charset = utf8mb4;
-
-
-CREATE TABLE point
-(
-    id    bigint NOT NULL auto_increment,
-    point bigint NOT NULL,
-    PRIMARY KEY (id)
-) engine = InnoDB
-  default charset = utf8mb4;
-
-
 CREATE TABLE user
 (
     id            bigint       NOT NULL auto_increment,
     email         varchar(255) NOT NULL,
     nickname      varchar(255) NOT NULL,
     password      varchar(255) NOT NULL,
-    grade_id      integer      NOT NULL,
+    grade         integer      NOT NULL,
     profile_image varchar(255),
-    point_id      bigint       NOT NULL,
+    point         bigint       NOT NULL,
     created_at    datetime     NOT NULL,
     updated_at    datetime     NOT NULL,
     PRIMARY KEY (id)
 ) engine = InnoDB
   default charset = utf8mb4;
-
-ALTER TABLE user
-    ADD FOREIGN KEY (grade_id) REFERENCES grade (id);
-
-ALTER TABLE user
-    ADD FOREIGN KEY (point_id) REFERENCES point (id);
 
 
 CREATE TABLE follow
@@ -113,14 +89,10 @@ ALTER TABLE post_image
 CREATE TABLE hashtag
 (
     id      bigint       NOT NULL auto_increment,
-    post_id bigint,
-    hashtag_id bigint NOT NULL,
+    hashtag varchar(255) NOT NULL,
     PRIMARY KEY (id)
 ) engine = InnoDB
   default charset = utf8mb4;
-
-ALTER TABLE hashtag
-    ADD FOREIGN KEY (post_id) REFERENCES post (id);
 
 
 CREATE TABLE post_hashtag
