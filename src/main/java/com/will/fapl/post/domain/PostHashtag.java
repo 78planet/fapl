@@ -1,6 +1,6 @@
 package com.will.fapl.post.domain;
 
-import com.will.fapl.hashtag.domain.HashTag;
+import com.will.fapl.hashtag.domain.Hashtag;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostHashTag {
+public class PostHashtag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +27,10 @@ public class PostHashTag {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id")
-    private HashTag hashTag;
+    private Hashtag hashtag;
 
-    public PostHashTag(Post post, HashTag hashTag) {
+    public PostHashtag(Post post, Hashtag hashtag) {
         this.post = post;
-        this.hashTag = hashTag;
+        this.hashtag = hashtag;
     }
 }

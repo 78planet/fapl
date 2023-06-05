@@ -1,6 +1,6 @@
 package com.will.fapl.hashtag.domain;
 
-import com.will.fapl.post.domain.PostHashTag;
+import com.will.fapl.post.domain.PostHashtag;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,14 +15,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class HashTag {
+public class Hashtag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "hashTag")
-    private List<PostHashTag> postHashTags = new ArrayList<>();
+    @OneToMany(mappedBy = "hashtag")
+    private List<PostHashtag> postHashTags = new ArrayList<>();
 
     private String hashtag;
 }
