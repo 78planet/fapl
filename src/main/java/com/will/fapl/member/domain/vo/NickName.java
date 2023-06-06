@@ -1,4 +1,4 @@
-package com.will.fapl.user.domain.vo;
+package com.will.fapl.member.domain.vo;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.text.MessageFormat.format;

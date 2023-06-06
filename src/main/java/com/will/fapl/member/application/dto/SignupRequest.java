@@ -1,4 +1,4 @@
-package com.will.fapl.user.application.dto;
+package com.will.fapl.member.application.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;

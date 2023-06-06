@@ -1,4 +1,4 @@
-package com.will.fapl.user.domain.vo;
+package com.will.fapl.member.domain.vo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

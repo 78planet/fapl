@@ -1,13 +1,13 @@
-package com.will.fapl.user.domain;
+package com.will.fapl.member.domain;
 
 import com.will.fapl.common.model.BaseEntity;
-import com.will.fapl.post.domain.PostLikeUser;
+import com.will.fapl.post.domain.PostLikeMember;
 import com.will.fapl.point.domain.Point;
 import com.will.fapl.post.domain.Post;
-import com.will.fapl.user.domain.converter.GradeConverter;
-import com.will.fapl.user.domain.vo.Email;
-import com.will.fapl.user.domain.vo.NickName;
-import com.will.fapl.user.domain.vo.Password;
+import com.will.fapl.member.domain.converter.GradeConverter;
+import com.will.fapl.member.domain.vo.Email;
+import com.will.fapl.member.domain.vo.NickName;
+import com.will.fapl.member.domain.vo.Password;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseEntity {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,17 +45,17 @@ public class User extends BaseEntity {
 
     private String profileImage;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private List<PostLikeUser> postLikeUsers = new ArrayList<>();
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<PostLikeMember> postLikeMembers = new ArrayList<>();
 
     @Embedded
     private Point point;
 
     @Builder
-    public User(Email email, Password password, NickName nickName, String imageUrl, Grade grade, Point point) {
+    public Member(Email email, Password password, NickName nickName, String imageUrl, Grade grade, Point point) {
         this.email = email;
         this.password = password;
         this.nickName = nickName;

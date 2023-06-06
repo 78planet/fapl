@@ -1,4 +1,4 @@
-package com.will.fapl.user.domain;
+package com.will.fapl.member.domain;
 
 import lombok.Getter;
 

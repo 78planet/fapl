@@ -1,18 +1,17 @@
-package com.will.fapl.user.domain;
+package com.will.fapl.member.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.will.fapl.point.domain.Point;
-import com.will.fapl.user.domain.vo.Email;
-import com.will.fapl.user.domain.vo.NickName;
-import com.will.fapl.user.domain.vo.Password;
+import com.will.fapl.member.domain.vo.Email;
+import com.will.fapl.member.domain.vo.NickName;
+import com.will.fapl.member.domain.vo.Password;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-class UserTest {
+class MemberTest {
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -25,15 +24,15 @@ class UserTest {
         String nickName = "qr123";
 
         // when
-        User user = User.builder()
+        Member member = Member.builder()
             .email(new Email(email))
             .password(Password.encryptPassword(passwordEncoder, password))
             .nickName(new NickName(nickName))
-            .grade(new Grade())
+            .grade(Grade.BRONZE)
             .point(new Point(123L))
             .build();
 
         // then
-        assertThat(user).isNotNull();
+        assertThat(member).isNotNull();
     }
 }

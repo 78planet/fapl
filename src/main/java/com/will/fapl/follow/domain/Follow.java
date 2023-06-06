@@ -1,6 +1,6 @@
 package com.will.fapl.follow.domain;
 
-import com.will.fapl.user.domain.User;
+import com.will.fapl.member.domain.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,10 +21,10 @@ public class Follow {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "following_user_id")
-    private User followingUser;
+    @JoinColumn(name = "following_member_id")
+    private Member followingMember;
 
     @ManyToOne
-    @JoinColumn(name = "follower_user_id")
-    private User followerUser;
+    @JoinColumn(name = "follower_member_id")
+    private Member followerMember;
 }

@@ -1,11 +1,11 @@
-package com.will.fapl.user.exception;
+package com.will.fapl.member.exception;
 
 import com.will.fapl.common.exception.BusinessException;
 import com.will.fapl.common.exception.ErrorCode;
 
 public class LoginFailedException extends BusinessException {
 
-    public LoginFailedException(String format, ErrorCode errorCode) {
+    public LoginFailedException(ErrorCode errorCode) {
         super(errorCode.getMessage(), errorCode);
     }
 }

@@ -1,8 +1,7 @@
-package com.will.fapl.user.domain.converter;
+package com.will.fapl.member.domain.converter;
 
-import com.will.fapl.user.domain.Grade;
+import com.will.fapl.member.domain.Grade;
 import jakarta.persistence.AttributeConverter;
-import java.util.Locale.Category;
 import java.util.stream.Stream;
 
 public class GradeConverter implements AttributeConverter<Grade, Integer> {
