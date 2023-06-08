@@ -1,6 +1,8 @@
 package com.will.fapl.member.domain;
 
+import com.will.fapl.common.exception.ErrorCode;
 import com.will.fapl.common.model.BaseEntity;
+import com.will.fapl.member.exception.LoginFailedException;
 import com.will.fapl.post.domain.PostLikeMember;
 import com.will.fapl.point.domain.Point;
 import com.will.fapl.post.domain.Post;
@@ -21,6 +23,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @Entity
@@ -82,5 +85,11 @@ public class Member extends BaseEntity {
 
     public void changePoint(Point point) {
         this.point = point;
+    }
+
+    public void checkPassword(PasswordEncoder passwordEncoder, String password) {
+        if (!this.password.isSamePassword(passwordEncoder, password)) {
+            throw new LoginFailedException(ErrorCode.LOGIN_FAILED);
+        }
     }
 }
