@@ -92,4 +92,8 @@ public class Member extends BaseEntity {
             throw new LoginFailedException(ErrorCode.LOGIN_FAILED);
         }
     }
+
+    public void changeNickName(String nickName) {
+        this.nickName = new NickName(nickName);
+    }
 }

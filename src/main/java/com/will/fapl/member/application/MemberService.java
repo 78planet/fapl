@@ -1,6 +1,10 @@
 package com.will.fapl.member.application;
 
 import com.will.fapl.common.exception.ErrorCode;
+import com.will.fapl.member.application.dto.request.EditProfileRequest;
+import com.will.fapl.member.application.dto.response.MemberResponse;
+import com.will.fapl.member.application.dto.response.ProfileResponse;
+import com.will.fapl.member.exception.NotFoundMemberException;
 import com.will.fapl.point.domain.Point;
 import com.will.fapl.member.application.dto.SignupRequest;
 import com.will.fapl.member.domain.Grade;
@@ -39,6 +43,22 @@ public class MemberService {
         return memberRepository.save(member).getId();
     }
 
+    @Transactional
+    public ProfileResponse modifyMember(Long id, EditProfileRequest editProfileRequest) {
+        Member member = getMemberById(id);
+        String nickName = editProfileRequest.getNickName();
+        String imageUrl = editProfileRequest.getImageUrl();
+
+        member.changeNickName(nickName);
+        member.changeProfileImage(imageUrl);
+        return new ProfileResponse(imageUrl, nickName);
+    }
+
+    @Transactional
+    public void removeMember(Long memberId) {
+        memberRepository.deleteById(memberId);
+    }
+
     private void validateExistEmail(String email) {
         if (memberRepository.existsByEmailValue(email)) {
             throw new DuplicateEmailException(email, ErrorCode.DUPLICATE_EMAIL);
@@ -48,5 +68,15 @@ public class MemberService {
     public Member getMemberByEmail(String email) {
         return memberRepository.findByEmail(new Email(email))
             .orElseThrow(() -> new LoginFailedException(ErrorCode.LOGIN_FAILED));
+    }
+
+    public MemberResponse getMemberResponseById(Long id) {
+        Member member = getMemberById(id);
+        return MemberResponse.from(member);
+    }
+
+    private Member getMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
+            .orElseThrow(() -> new NotFoundMemberException(ErrorCode.NOT_FOUND_MEMBER, memberId));
     }
 }
