@@ -27,7 +27,7 @@ public class RefreshToken {
         this.expiredTime = expiredTime;
     }
 
-    public boolean isNotSame(String refreshToken) {
-        return !Objects.equals(this.value, refreshToken);
+    public boolean isSame(String refreshToken) {
+        return Objects.equals(this.value, refreshToken);
     }
 }

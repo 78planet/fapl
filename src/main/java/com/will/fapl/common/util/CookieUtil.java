@@ -9,10 +9,13 @@ import java.time.Duration;
 import java.util.Arrays;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseCookie;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CookieUtil {
+    private static final Logger logger = LoggerFactory.getLogger(CookieUtil.class);
 
     private static final String REFRESH_TOKEN_COOKIE_NAME = "refreshToken";
 
@@ -27,6 +30,7 @@ public class CookieUtil {
     }
 
     public static String getTokenCookieValue(HttpServletRequest request) {
+        logger.info("***", Arrays.toString(request.getCookies()));
         Cookie findCookie = Arrays.stream(request.getCookies())
             .filter(cookie -> cookie.getName().equals(REFRESH_TOKEN_COOKIE_NAME))
             .findAny()

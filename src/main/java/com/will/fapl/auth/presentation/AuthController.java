@@ -5,12 +5,16 @@ import com.will.fapl.auth.aop.LoginRequired;
 import com.will.fapl.auth.application.AuthFacade;
 import com.will.fapl.auth.application.dto.TokenDto;
 import com.will.fapl.auth.application.dto.request.SignInRequest;
+import com.will.fapl.auth.application.dto.response.AccessTokenResponse;
 import com.will.fapl.auth.application.dto.response.LoginResponseDto;
 import com.will.fapl.auth.domain.login.LoginMember;
 import com.will.fapl.auth.presentation.dto.LoginResponse;
+import com.will.fapl.auth.presentation.resolver.JwtToken;
+import com.will.fapl.auth.presentation.resolver.RequestTokens;
 import com.will.fapl.common.model.ApiResponse;
 import com.will.fapl.common.util.CookieUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -46,6 +50,19 @@ public class AuthController {
         authFacade.logout(loginMember);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "엑세스 토큰 재발급", description = "엑세스 토큰을 재발급 받습니다.")
+    @SecurityRequirement(name = "bearer")
+    @PostMapping("/token")
+    public ResponseEntity<ApiResponse<AccessTokenResponse>> refreshAccessToken(@RequestTokens JwtToken jwtToken) {
+        AccessTokenResponse accessToken = authFacade.refreshAccessToken(
+            jwtToken.getAccessToken(),
+            jwtToken.getRefreshToken()
+        );
+        return ResponseEntity.ok(new ApiResponse<>(accessToken));
+    }
+
+
 
     private void setTokenCookie(HttpServletResponse response, TokenDto tokenDto) {
         ResponseCookie cookie = CookieUtil.createTokenCookie(tokenDto);
