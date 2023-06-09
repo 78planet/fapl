@@ -6,7 +6,7 @@ import com.will.fapl.comment.domain.Comment;
 import com.will.fapl.common.model.BaseEntity;
 import com.will.fapl.image.domain.PostImage;
 import com.will.fapl.image.domain.PostImageList;
-import com.will.fapl.user.domain.User;
+import com.will.fapl.member.domain.Member;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,8 +32,8 @@ public class Post extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     private String content;
 
@@ -51,23 +51,23 @@ public class Post extends BaseEntity {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
-    private List<PostLikeUser> likedUsers = new ArrayList<>();
+    private List<PostLikeMember> likedMembers = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
-    private List<PostDislikeUser> dislikedUsers = new ArrayList<>();
+    private List<PostDislikeMember> dislikedMembers = new ArrayList<>();
 
     @Builder
-    public Post(User user, String content, Long likeCnt, Long dislikeCnt, List<Comment> comments,
-                    List<String> postImages, List<PostLikeUser> postLikeUsers, List<PostDislikeUser> postDislikeUsers) {
-        this.user = user;
-        this.user.addPost(this);
+    public Post(Member member, String content, Long likeCnt, Long dislikeCnt, List<Comment> comments,
+                    List<String> postImages, List<PostLikeMember> postLikeMembers, List<PostDislikeMember> postDislikeMembers) {
+        this.member = member;
+        this.member.addPost(this);
         this.content = content;
         this.likeCnt = likeCnt;
         this.dislikeCnt = dislikeCnt;
         this.postImageList = new PostImageList(convertToPostImages(postImages));
         this.comments = comments;
-        this.likedUsers = postLikeUsers;
-        this.dislikedUsers = postDislikeUsers;
+        this.likedMembers = postLikeMembers;
+        this.dislikedMembers = postDislikeMembers;
     }
 
     private List<PostImage> convertToPostImages(List<String> imageUrls) {

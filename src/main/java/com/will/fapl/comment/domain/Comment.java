@@ -1,7 +1,7 @@
 package com.will.fapl.comment.domain;
 
 import com.will.fapl.post.domain.Post;
-import com.will.fapl.user.domain.User;
+import com.will.fapl.member.domain.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,8 +26,8 @@ public class Comment {
     private Post post;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     private String content;
 
@@ -37,10 +37,10 @@ public class Comment {
 
     private Long orderNum;
 
-    public Comment(Post post, User user, String content, Long hierarchy, Long groupId,
+    public Comment(Post post, Member member, String content, Long hierarchy, Long groupId,
         Long orderNum) {
         this.post = post;
-        this.user = user;
+        this.member = member;
         this.content = content;
         this.hierarchy = hierarchy;
         this.groupId = groupId;

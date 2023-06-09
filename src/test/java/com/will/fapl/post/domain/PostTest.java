@@ -3,13 +3,12 @@ package com.will.fapl.post.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.google.common.annotations.GwtCompatible;
 import com.will.fapl.point.domain.Point;
-import com.will.fapl.user.domain.Grade;
-import com.will.fapl.user.domain.User;
-import com.will.fapl.user.domain.vo.Email;
-import com.will.fapl.user.domain.vo.NickName;
-import com.will.fapl.user.domain.vo.Password;
+import com.will.fapl.member.domain.Grade;
+import com.will.fapl.member.domain.Member;
+import com.will.fapl.member.domain.vo.Email;
+import com.will.fapl.member.domain.vo.NickName;
+import com.will.fapl.member.domain.vo.Password;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,7 @@ class PostTest {
         );
 
         Post thisIsContent = Post.builder()
-            .user(getUser())
+            .member(getUser())
             .content("this is content")
             .likeCnt(123L)
             .dislikeCnt(2L)
@@ -86,7 +85,7 @@ class PostTest {
 
     private Post getPost(List<String> imageUrls) {
         return Post.builder()
-            .user(getUser())
+            .member(getUser())
             .content("this is content")
             .likeCnt(123L)
             .dislikeCnt(2L)
@@ -94,16 +93,16 @@ class PostTest {
             .build();
     }
 
-    private User getUser() {
+    private Member getUser() {
         String email = "test@mail.com";
         String password = "!@Password123";
         String nickName = "qr123";
 
-        return User.builder()
+        return Member.builder()
             .email(new Email(email))
             .password(Password.encryptPassword(passwordEncoder, password))
             .nickName(new NickName(nickName))
-            .grade(new Grade("bronze"))
+            .grade(Grade.BRONZE)
             .point(new Point(0L))
             .build();
     }
