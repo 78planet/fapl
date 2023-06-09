@@ -19,8 +19,6 @@ spring:
     hibernate:
       ddl-auto: validate
 
-
-
   data:
     redis:
       host: localhost

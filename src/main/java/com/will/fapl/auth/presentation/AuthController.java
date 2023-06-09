@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +63,12 @@ public class AuthController {
         return ResponseEntity.ok(new ApiResponse<>(accessToken));
     }
 
-
+    @Operation(hidden = true)
+    @GetMapping("/login/members")
+    @LoginRequired
+    public ResponseEntity<ApiResponse<LoginMember>> getLoginMember(@Login LoginMember loginMember) {
+        return ResponseEntity.ok(new ApiResponse<>(loginMember));
+    }
 
     private void setTokenCookie(HttpServletResponse response, TokenDto tokenDto) {
         ResponseCookie cookie = CookieUtil.createTokenCookie(tokenDto);

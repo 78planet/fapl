@@ -1,7 +1,10 @@
 package com.will.fapl.member.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import com.will.fapl.member.exception.LoginFailedException;
 import com.will.fapl.point.domain.Point;
 import com.will.fapl.member.domain.vo.Email;
 import com.will.fapl.member.domain.vo.NickName;
@@ -34,5 +37,41 @@ class MemberTest {
 
         // then
         assertThat(member).isNotNull();
+    }
+
+    @DisplayName("비밀번호 일치 성공")
+    @Test
+    void checkPassword_success() {
+
+        String email = "test@mail.com";
+        String password = "!@Password123";
+        String nickName = "fapl";
+
+        Member member = Member.builder()
+            .email(new Email(email))
+            .password(Password.encryptPassword(passwordEncoder, password))
+            .nickName(new NickName(nickName))
+            .build();
+
+        assertDoesNotThrow(() -> member.checkPassword(passwordEncoder, password));
+    }
+
+    @DisplayName("비밀번호 일치 실패")
+    @Test
+    void checkPassword_fail() {
+
+        String email = "test@mail.com";
+        String password = "!@Password123";
+        String nickName = "fapl";
+        String notMyPassword = "!@Password1235";
+
+        Member member = Member.builder()
+            .email(new Email(email))
+            .password(Password.encryptPassword(passwordEncoder, password))
+            .nickName(new NickName(nickName))
+            .build();
+
+        assertThatThrownBy(() -> member.checkPassword(passwordEncoder, notMyPassword))
+            .isInstanceOf(LoginFailedException.class);
     }
 }
