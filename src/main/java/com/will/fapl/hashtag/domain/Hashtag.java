@@ -25,4 +25,8 @@ public class Hashtag {
     private List<PostHashtag> postHashTags = new ArrayList<>();
 
     private String hashtag;
+
+    public Hashtag(String hashtag) {
+        this.hashtag = hashtag;
+    }
 }

@@ -18,14 +18,14 @@ import lombok.NoArgsConstructor;
 public class PostHashTagList {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private Set<PostHashtag> postTags = new HashSet<>();
+    private Set<PostHashtag> postHashtags = new HashSet<>();
 
-    public PostHashTagList(List<PostHashtag> postTags) {
-        this.postTags = new HashSet<>(postTags);
+    public PostHashTagList(List<PostHashtag> postHashtags) {
+        this.postHashtags = new HashSet<>(postHashtags);
     }
 
-    public void changePostHashtags(List<PostHashtag> postTagsToAdd) {
-        postTags.clear();
-        postTags.addAll(postTagsToAdd);
+    public void changePostHashtags(List<PostHashtag> postHashtagsToAdd) {
+        postHashtags.clear();
+        postHashtags.addAll(postHashtagsToAdd);
     }
 }
