@@ -2,9 +2,12 @@ package com.will.fapl.post.acceptance;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.will.fapl.member.application.dto.SignupRequest;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
+import com.will.fapl.post.application.dto.response.PostResponse;
 import com.will.fapl.util.AcceptanceTest;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 class PostControllerTest extends AcceptanceTest {
@@ -40,6 +44,34 @@ class PostControllerTest extends AcceptanceTest {
             () -> assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value()),
             () -> assertThat(response.getHeader(HttpHeaders.LOCATION)).isNotNull()
         );
+    }
+
+    @DisplayName("게시물 단건 조회 성공")
+    @Test
+    void showPost_success() throws Exception {
+        // given
+        CreatePostRequest createRequest = createPostRequest();
+        MockHttpServletResponse createPostResponse = 게시글_작성(accessToken, createRequest);
+        Long postId = getPostId(createPostResponse);
+
+        // when
+        MockHttpServletResponse response = mockMvc.perform(get("/api/posts/{postId}", postId)
+                .header(HttpHeaders.AUTHORIZATION, accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andDo(print())
+            .andReturn().getResponse();
+
+        // then
+        PostResponse postResponse = getResponseObject(response, PostResponse.class);
+        assertAll(
+            () -> assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value()),
+            () -> assertThat(postResponse.getId()).isPositive()
+        );
+    }
+
+    private Long getPostId(MockHttpServletResponse response) {
+        String[] locationHeader = response.getHeader(HttpHeaders.LOCATION).split("/");
+        return Long.valueOf(locationHeader[locationHeader.length - 1]);
     }
 
     private CreatePostRequest createPostRequest() {
