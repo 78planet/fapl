@@ -16,12 +16,14 @@ public class HashtagService {
 
     @Transactional
     public List<Hashtag> createHashtag(List<String> hashtags) {
-        return hashtagRepository.saveAll(toHashtags(hashtags));
-    }
-
-    private List<Hashtag> toHashtags(List<String> hashtags) {
-        return hashtags.stream()
+        List<Hashtag> existingHashtags = hashtagRepository.findAllByHashtagIn(hashtags);
+        List<Hashtag> newHashtags = hashtags.stream()
+            .filter(hashtag -> existingHashtags.stream().noneMatch(h -> h.getHashtag().equals(hashtag)))
             .map(Hashtag::new)
             .toList();
+        hashtagRepository.saveAll(newHashtags);
+
+        existingHashtags.addAll(newHashtags);
+        return existingHashtags;
     }
 }
