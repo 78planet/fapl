@@ -36,4 +36,10 @@ public class PostController {
         return ResponseEntity.created(createLocationUri(postId)).build();
     }
 
+    @Operation(summary = "게시물 단건 조회", description = "게시물 단건 조회 API입니다.")
+    @GetMapping("/{postId}")
+    public ResponseEntity<ApiResponse<PostResponse>> showPost(@PathVariable("postId") Long postId) {
+        PostResponse postResponse = postFacade.getPost(postId);
+        return ResponseEntity.ok(new ApiResponse<>(postResponse));
+    }
 }

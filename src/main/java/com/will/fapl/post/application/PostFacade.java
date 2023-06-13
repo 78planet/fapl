@@ -6,6 +6,7 @@ import com.will.fapl.hashtag.domain.Hashtag;
 import com.will.fapl.member.application.MemberService;
 import com.will.fapl.member.domain.Member;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
+import com.will.fapl.post.application.dto.response.PostResponse;
 import com.will.fapl.post.domain.Post;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +35,10 @@ public class PostFacade {
         return post.getId();
     }
 
+    public PostResponse getPost(Long postId) {
+        Post post = postService.getPostWithFetchById(postId);
+        return PostResponse.from(post);
+    }
 
     private List<String> toHashTags(String content) {
         return Arrays.stream(content.split("\\s+"))
