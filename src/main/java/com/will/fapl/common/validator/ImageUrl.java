@@ -1,4 +1,4 @@
-package com.will.fapl.comment.validator;
+package com.will.fapl.common.validator;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

@@ -1,4 +1,4 @@
-package com.will.fapl.comment.validator;
+package com.will.fapl.common.validator;
 
 import com.will.fapl.common.util.ImageUtil;
 import jakarta.validation.ConstraintValidator;
