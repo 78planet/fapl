@@ -4,6 +4,7 @@ import com.will.fapl.common.exception.ErrorCode;
 import com.will.fapl.hashtag.domain.Hashtag;
 import com.will.fapl.member.domain.Member;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
+import com.will.fapl.post.application.dto.request.EditPostRequest;
 import com.will.fapl.post.domain.Post;
 import com.will.fapl.post.domain.PostRepository;
 import com.will.fapl.post.exception.NotFoundPostException;
@@ -29,4 +30,21 @@ public class PostService {
         return postRepository.findPostWithFetchById(postId)
             .orElseThrow(() -> new NotFoundPostException(ErrorCode.NOT_FOUND_POST, postId));
     }
+
+    @Transactional
+    public Post modifyPost(Long postId, List<Hashtag> hashtagList, EditPostRequest editPostRequest) {
+        Post post = getPostById(postId);
+
+        post.changeContent(editPostRequest.getContent());
+        post.changePostImageList(editPostRequest.getImageUrls());
+        post.changeHashtagList(hashtagList);
+
+        return post;
+    }
+
+    public Post getPostById(Long id) {
+        return postRepository.findById(id)
+            .orElseThrow(() -> new NotFoundPostException(ErrorCode.NOT_FOUND_POST, id));
+    }
+
 }

@@ -89,4 +89,12 @@ public class Post extends BaseEntity {
     public void changeContent(String content) {
         this.content = content;
     }
+
+    public void changePostImageList(List<String> imageUrls) {
+        this.postImageList.changePostImageList(convertToPostImages(imageUrls));
+    }
+
+    public void changeHashtagList(List<Hashtag> hashtags) {
+        this.hashTagList.changePostHashtags(convertToHashtags(hashtags));
+    }
 }

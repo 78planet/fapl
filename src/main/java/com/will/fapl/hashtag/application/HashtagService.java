@@ -21,7 +21,10 @@ public class HashtagService {
             .filter(hashtag -> existingHashtags.stream().noneMatch(h -> h.getHashtag().equals(hashtag)))
             .map(Hashtag::new)
             .toList();
-        hashtagRepository.saveAll(newHashtags);
+
+        if (!newHashtags.isEmpty()) {
+            hashtagRepository.saveAll(newHashtags);
+        }
 
         existingHashtags.addAll(newHashtags);
         return existingHashtags;

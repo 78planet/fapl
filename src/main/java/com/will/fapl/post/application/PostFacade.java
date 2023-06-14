@@ -6,6 +6,7 @@ import com.will.fapl.hashtag.domain.Hashtag;
 import com.will.fapl.member.application.MemberService;
 import com.will.fapl.member.domain.Member;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
+import com.will.fapl.post.application.dto.request.EditPostRequest;
 import com.will.fapl.post.application.dto.response.PostResponse;
 import com.will.fapl.post.domain.Post;
 import java.util.Arrays;
@@ -29,7 +30,8 @@ public class PostFacade {
         Member member =  memberService.getMemberById(loginMember.getId());
 
         List<Hashtag> hashtagList = hashtagService.createHashtag(
-            toHashTags(createPostRequest.getContent()));
+            toHashTags(createPostRequest.getContent())
+        );
 
         Post post = postService.createPost(member, hashtagList, createPostRequest);
         return post.getId();
@@ -38,6 +40,18 @@ public class PostFacade {
     public PostResponse getPost(Long postId) {
         Post post = postService.getPostWithFetchById(postId);
         return PostResponse.from(post);
+    }
+
+    @Transactional
+    public Long modifyPost(LoginMember loginMember, Long postId, EditPostRequest editPostRequest) {
+        Member member =  memberService.getMemberById(loginMember.getId());
+
+        List<Hashtag> hashtagList = hashtagService.createHashtag(
+            toHashTags(editPostRequest.getContent())
+        );
+
+        Post post = postService.modifyPost(postId, hashtagList , editPostRequest);
+        return post.getId();
     }
 
     private List<String> toHashTags(String content) {
