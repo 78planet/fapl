@@ -1,6 +1,7 @@
 package com.will.fapl.post.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.will.fapl.hashtag.application.HashtagService;
@@ -8,9 +9,11 @@ import com.will.fapl.hashtag.domain.Hashtag;
 import com.will.fapl.hashtag.domain.HashtagRepository;
 import com.will.fapl.member.domain.Member;
 import com.will.fapl.member.domain.MemberRepository;
+import com.will.fapl.member.exception.LoginFailedException;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
 import com.will.fapl.post.application.dto.request.EditPostRequest;
 import com.will.fapl.post.domain.Post;
+import com.will.fapl.post.exception.NotFoundPostException;
 import com.will.fapl.util.IntegrationTest;
 import com.will.fapl.util.fixture.TestMemberBuilder;
 import jakarta.persistence.EntityManager;
@@ -116,6 +119,28 @@ class PostServiceTest extends IntegrationTest {
             () -> assertThat(updatedPost.getPostImageList().getPostImages().get(0).getImageUrl()).isEqualTo("imageUrl3")
         );
     }
+
+    @DisplayName("게시물 삭제 성공")
+    @Test
+    void deletePost_success() {
+        // given
+        CreatePostRequest request = createPostRequest();
+        List<Hashtag> hashtags = List.of(
+            new Hashtag("hi"),
+            new Hashtag("new")
+        );
+        hashtagRepository.saveAll(hashtags);
+        Long postId = postService.createPost(member, hashtags, request).getId();
+
+        // when
+        postService.removePost(postId);
+
+        // then
+        assertThatThrownBy(() -> postService.getPostById(postId))
+            .isInstanceOf(NotFoundPostException.class)
+            .hasMessageContaining("존재하지 않는 게시글입니다.");
+    }
+
 
     private CreatePostRequest createPostRequest() {
         return CreatePostRequest.builder()

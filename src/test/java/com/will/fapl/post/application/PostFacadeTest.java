@@ -1,6 +1,7 @@
 package com.will.fapl.post.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.will.fapl.auth.domain.login.LoginMember;
@@ -9,6 +10,7 @@ import com.will.fapl.member.domain.MemberRepository;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
 import com.will.fapl.post.application.dto.request.EditPostRequest;
 import com.will.fapl.post.application.dto.response.PostResponse;
+import com.will.fapl.post.exception.NotFoundPostException;
 import com.will.fapl.util.IntegrationTest;
 import com.will.fapl.util.fixture.TestMemberBuilder;
 import java.util.List;
@@ -59,6 +61,24 @@ public class PostFacadeTest extends IntegrationTest {
             () -> assertThat(post.getContent()).isEqualTo(editContent),
             () -> assertThat(post.getPostImageList().get(0)).isEqualTo("imageUrl3")
         );
+    }
+
+
+    @DisplayName("게시물 삭제 성공")
+    @Test
+    void deletePost_success() {
+        // given
+        LoginMember member = createLoginMember();
+        CreatePostRequest request = createPostRequest();
+        Long postId = postFacade.createPost(member, request);
+
+        // when
+        postFacade.removePost(member.getId(), postId);
+
+        // then
+        assertThatThrownBy(() -> postFacade.getPost(postId))
+            .isInstanceOf(NotFoundPostException.class)
+            .hasMessageContaining("존재하지 않는 게시글입니다.");
     }
 
     private CreatePostRequest createPostRequest() {

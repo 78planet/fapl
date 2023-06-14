@@ -91,6 +91,22 @@ class PostControllerTest extends AcceptanceTest {
         );
     }
 
+    @DisplayName("post 삭제 완료")
+    @Test
+    void delete_post_success() throws Exception {
+        // given
+        CreatePostRequest createRequest = createPostRequest();
+        MockHttpServletResponse createPostResponse = 게시글_작성(accessToken, createRequest);
+        Long postId = getPostId(createPostResponse);
+
+        // when
+        MockHttpServletResponse response = 게시글_삭제(accessToken, postId);
+
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+
     private Long getPostId(MockHttpServletResponse response) {
         String[] locationHeader = response.getHeader(HttpHeaders.LOCATION).split("/");
         return Long.valueOf(locationHeader[locationHeader.length - 1]);
