@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.will.fapl.comment.domain.Comment;
 import com.will.fapl.common.model.BaseEntity;
+import com.will.fapl.hashtag.domain.Hashtag;
 import com.will.fapl.image.domain.PostImage;
 import com.will.fapl.image.domain.PostImageList;
 import com.will.fapl.member.domain.Member;
@@ -58,10 +59,12 @@ public class Post extends BaseEntity {
 
     @Builder
     public Post(Member member, String content, Long likeCnt, Long dislikeCnt, List<Comment> comments,
-                    List<String> postImages, List<PostLikeMember> postLikeMembers, List<PostDislikeMember> postDislikeMembers) {
+                    List<String> postImages, List<PostLikeMember> postLikeMembers,
+                        List<PostDislikeMember> postDislikeMembers, List<Hashtag> hashtags) {
         this.member = member;
         this.member.addPost(this);
         this.content = content;
+        this.hashTagList = new PostHashTagList(convertToHashtags(hashtags));
         this.likeCnt = likeCnt;
         this.dislikeCnt = dislikeCnt;
         this.postImageList = new PostImageList(convertToPostImages(postImages));
@@ -69,6 +72,13 @@ public class Post extends BaseEntity {
         this.likedMembers = postLikeMembers;
         this.dislikedMembers = postDislikeMembers;
     }
+
+    private List<PostHashtag> convertToHashtags(List<Hashtag> hashtags) {
+        return hashtags.stream()
+            .map(hashtag -> new PostHashtag(this, hashtag))
+            .toList();
+    }
+
 
     private List<PostImage> convertToPostImages(List<String> imageUrls) {
         return imageUrls.stream()
@@ -78,5 +88,17 @@ public class Post extends BaseEntity {
 
     public void changeContent(String content) {
         this.content = content;
+    }
+
+    public void changePostImageList(List<String> imageUrls) {
+        this.postImageList.changePostImageList(convertToPostImages(imageUrls));
+    }
+
+    public void changeHashtagList(List<Hashtag> hashtags) {
+        this.hashTagList.changePostHashtags(convertToHashtags(hashtags));
+    }
+
+    public boolean isWrittenBy(Member member) {
+        return this.member.isSame(member);
     }
 }

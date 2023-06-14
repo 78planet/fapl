@@ -1,6 +1,6 @@
 package com.will.fapl.member.application.dto.request;
 
-import com.will.fapl.comment.validator.ImageUrl;
+import com.will.fapl.common.validator.ImageUrl;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;

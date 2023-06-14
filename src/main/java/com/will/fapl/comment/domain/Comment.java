@@ -31,6 +31,7 @@ public class Comment {
 
     private String content;
 
+    // TODO hierarchy 2 개로 제한
     private Long hierarchy;
 
     private Long groupId;
