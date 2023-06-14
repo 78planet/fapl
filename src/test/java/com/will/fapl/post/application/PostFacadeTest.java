@@ -1,12 +1,14 @@
 package com.will.fapl.post.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.will.fapl.auth.domain.login.LoginMember;
 import com.will.fapl.member.domain.Member;
 import com.will.fapl.member.domain.MemberRepository;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
-import com.will.fapl.post.domain.PostRepository;
+import com.will.fapl.post.application.dto.request.EditPostRequest;
+import com.will.fapl.post.application.dto.response.PostResponse;
 import com.will.fapl.util.IntegrationTest;
 import com.will.fapl.util.fixture.TestMemberBuilder;
 import java.util.List;
@@ -34,6 +36,29 @@ public class PostFacadeTest extends IntegrationTest {
 
         // then
         assertThat(postId).isPositive();
+    }
+
+    @DisplayName("게시글 수정 성공")
+    @Test
+    void modifyPost_success() {
+        // given
+        LoginMember member = createLoginMember();
+        CreatePostRequest request = createPostRequest();
+        Long postId = postFacade.createPost(member, request);
+
+        String editContent = "hi #hi hello #hello #fashin #good #edit";
+        EditPostRequest editPostRequest = new EditPostRequest(editContent, List.of("imageUrl3"));
+
+        // when
+        Long editPostId = postFacade.modifyPost(member, postId, editPostRequest);
+
+        // then
+        PostResponse post = postFacade.getPost(editPostId);
+        assertAll(
+            () -> assertThat(postId).isEqualTo(editPostId),
+            () -> assertThat(post.getContent()).isEqualTo(editContent),
+            () -> assertThat(post.getPostImageList().get(0)).isEqualTo("imageUrl3")
+        );
     }
 
     private CreatePostRequest createPostRequest() {

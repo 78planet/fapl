@@ -1,6 +1,7 @@
 package com.will.fapl.util;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.fasterxml.jackson.databind.JavaType;
@@ -11,6 +12,7 @@ import com.will.fapl.common.exception.ErrorResponse;
 import com.will.fapl.common.model.ApiResponse;
 import com.will.fapl.member.application.dto.SignupRequest;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
+import com.will.fapl.post.application.dto.request.EditPostRequest;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.AfterEach;
@@ -75,6 +77,14 @@ public class AcceptanceTest {
             .andReturn().getResponse();
     }
 
+    protected MockHttpServletResponse 게시글_수정(String token, EditPostRequest request, Long postId) throws Exception {
+        return mockMvc.perform(put("/api/posts/" + postId)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, token)
+                .content(objectMapper.writeValueAsString(request)))
+            .andDo(print())
+            .andReturn().getResponse();
+    }
 
     protected ErrorResponse getErrorResponse(MockHttpServletResponse response) throws IOException {
         return objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);

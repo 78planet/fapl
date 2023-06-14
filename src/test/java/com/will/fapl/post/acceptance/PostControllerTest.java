@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 import com.will.fapl.member.application.dto.SignupRequest;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
+import com.will.fapl.post.application.dto.request.EditPostRequest;
 import com.will.fapl.post.application.dto.response.PostResponse;
 import com.will.fapl.util.AcceptanceTest;
 import java.util.List;
@@ -66,6 +67,27 @@ class PostControllerTest extends AcceptanceTest {
         assertAll(
             () -> assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value()),
             () -> assertThat(postResponse.getId()).isPositive()
+        );
+    }
+
+
+    @DisplayName("post 수정 완료")
+    @Test
+    void modify_post_success() throws Exception {
+        // given
+        CreatePostRequest createRequest = createPostRequest();
+        MockHttpServletResponse createPostResponse = 게시글_작성(accessToken, createRequest);
+        Long postId = getPostId(createPostResponse);
+
+        String editContent = "hi #hi hello #hello #fashin #good #edit";
+        EditPostRequest editPostRequest = new EditPostRequest(editContent, List.of("imageUrl3"));
+
+        // when
+        MockHttpServletResponse response = 게시글_수정(accessToken, editPostRequest, postId);
+
+        // then
+        assertAll(
+            () -> assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value())
         );
     }
 

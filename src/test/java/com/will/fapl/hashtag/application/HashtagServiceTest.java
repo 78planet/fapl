@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.will.fapl.hashtag.domain.Hashtag;
 import com.will.fapl.hashtag.domain.HashtagRepository;
 import com.will.fapl.util.IntegrationTest;
-import jakarta.persistence.EntityManager;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
