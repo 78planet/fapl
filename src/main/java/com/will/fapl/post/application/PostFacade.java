@@ -1,6 +1,7 @@
 package com.will.fapl.post.application;
 
 import com.will.fapl.auth.domain.login.LoginMember;
+import com.will.fapl.common.exception.ErrorCode;
 import com.will.fapl.hashtag.application.HashtagService;
 import com.will.fapl.hashtag.domain.Hashtag;
 import com.will.fapl.member.application.MemberService;
@@ -9,6 +10,7 @@ import com.will.fapl.post.application.dto.request.CreatePostRequest;
 import com.will.fapl.post.application.dto.request.EditPostRequest;
 import com.will.fapl.post.application.dto.response.PostResponse;
 import com.will.fapl.post.domain.Post;
+import com.will.fapl.post.exception.PostNotBelongToCoupleException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +46,7 @@ public class PostFacade {
 
     @Transactional
     public Long modifyPost(LoginMember loginMember, Long postId, EditPostRequest editPostRequest) {
-        Member member =  memberService.getMemberById(loginMember.getId());
+        memberService.getMemberById(loginMember.getId());
 
         List<Hashtag> hashtagList = hashtagService.createHashtag(
             toHashTags(editPostRequest.getContent())
@@ -52,6 +54,16 @@ public class PostFacade {
 
         Post post = postService.modifyPost(postId, hashtagList , editPostRequest);
         return post.getId();
+    }
+
+    @Transactional
+    public void removePost(Long memberId, Long postId) {
+        Member member =  memberService.getMemberById(memberId);
+        Post post = postService.getPostById(postId);
+        if (!post.isWrittenBy(member)) {
+            throw new PostNotBelongToCoupleException(memberId, postId, ErrorCode.NOT_BELONG_TO_COUPLE);
+        }
+        postService.removePost(postId);
     }
 
     private List<String> toHashTags(String content) {

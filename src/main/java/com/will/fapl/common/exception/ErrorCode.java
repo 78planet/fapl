@@ -27,7 +27,8 @@ public enum ErrorCode {
     INVALID_TOKEN_REQUEST(HttpStatus.UNAUTHORIZED, "A004", "토큰을 재발급 할 수 없는 상태입니다."),
 
     // Post
-    NOT_FOUND_POST(HttpStatus.NOT_FOUND, "P001", "존재하지 않는 게시글입니다.");
+    NOT_FOUND_POST(HttpStatus.NOT_FOUND, "P001", "존재하지 않는 게시글입니다."),
+    NOT_BELONG_TO_COUPLE(HttpStatus.FORBIDDEN, "P002", "해당하는 사용자의 게시물이 아닙니다.");
 
     private final HttpStatus status;
     private final String code;

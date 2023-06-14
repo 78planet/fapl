@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,4 +58,12 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "게시글 삭제", description = "게시글 삭제 API입니다.")
+    @LoginRequired
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<ApiResponse<Void>> deletePost(@Login LoginMember loginMember,
+                                                        @PathVariable("postId") Long postId) {
+        postFacade.removePost(loginMember.getId(), postId);
+        return ResponseEntity.noContent().build();
+    }
 }

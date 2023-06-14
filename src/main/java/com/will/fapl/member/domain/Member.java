@@ -96,4 +96,8 @@ public class Member extends BaseEntity {
     public void changeNickName(String nickName) {
         this.nickName = new NickName(nickName);
     }
+
+    public boolean isSame(Member member) {
+        return this.id.equals(member.id);
+    }
 }

@@ -97,4 +97,8 @@ public class Post extends BaseEntity {
     public void changeHashtagList(List<Hashtag> hashtags) {
         this.hashTagList.changePostHashtags(convertToHashtags(hashtags));
     }
+
+    public boolean isWrittenBy(Member member) {
+        return this.member.isSame(member);
+    }
 }
