@@ -1,4 +1,4 @@
-package com.will.fapl.comment.domain.application.dto.response;
+package com.will.fapl.comment.application.dto.response;
 
 import com.will.fapl.member.application.dto.response.MemberResponse;
 import lombok.AccessLevel;

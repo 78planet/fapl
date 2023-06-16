@@ -1,6 +1,6 @@
 package com.will.fapl.post.application.dto.response;
 
-import com.will.fapl.comment.domain.application.dto.response.CommentResponse;
+import com.will.fapl.comment.application.dto.response.CommentResponse;
 import com.will.fapl.member.application.dto.response.MemberResponse;
 import com.will.fapl.post.domain.Post;
 import java.util.List;

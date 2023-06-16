@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,8 +39,8 @@ public class Comment {
 
     private Long orderNum;
 
-    public Comment(Post post, Member member, String content, Long hierarchy, Long groupId,
-        Long orderNum) {
+    @Builder
+    public Comment(Post post, Member member, String content, Long hierarchy, Long groupId, Long orderNum) {
         this.post = post;
         this.member = member;
         this.content = content;
