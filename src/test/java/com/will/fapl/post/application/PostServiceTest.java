@@ -12,12 +12,15 @@ import com.will.fapl.member.domain.MemberRepository;
 import com.will.fapl.member.exception.LoginFailedException;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
 import com.will.fapl.post.application.dto.request.EditPostRequest;
+import com.will.fapl.post.application.dto.request.PostFilterCondition;
+import com.will.fapl.post.application.dto.response.PostSearchResponse;
 import com.will.fapl.post.domain.Post;
 import com.will.fapl.post.exception.NotFoundPostException;
 import com.will.fapl.util.IntegrationTest;
 import com.will.fapl.util.fixture.TestMemberBuilder;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -141,6 +144,48 @@ class PostServiceTest extends IntegrationTest {
             .hasMessageContaining("존재하지 않는 게시글입니다.");
     }
 
+
+    @DisplayName("검색 성공")
+    @Test
+    void search_success() {
+        //given
+        CreatePostRequest request = createPostRequest();
+        List<Hashtag> hashtags = List.of(
+            new Hashtag("hi"),
+            new Hashtag("new")
+        );
+        hashtagRepository.saveAll(hashtags);
+
+        Long postId = postService.createPost(member, hashtags, request).getId();
+        PostFilterCondition filterCondition = new PostFilterCondition("hi", null, null);
+
+        //when
+        List<PostSearchResponse> searchPosts = postService.searchPostsByHashtag(filterCondition);
+
+        //then
+        assertThat(searchPosts).hasSize(1);
+    }
+
+    @DisplayName("필터 없으면 전체 검색")
+    @Test
+    void search_noFilter_success() {
+        //given
+        CreatePostRequest request = createPostRequest();
+        List<Hashtag> hashtags = List.of(
+            new Hashtag("hi"),
+            new Hashtag("new")
+        );
+        hashtagRepository.saveAll(hashtags);
+
+        Long postId = postService.createPost(member, hashtags, request).getId();
+        PostFilterCondition filterCondition = new PostFilterCondition(null, null, null);
+
+        //when
+        List<PostSearchResponse> searchPosts = postService.searchPostsByHashtag(filterCondition);
+
+        //then
+        assertThat(searchPosts).hasSize(1);
+    }
 
     private CreatePostRequest createPostRequest() {
         return CreatePostRequest.builder()

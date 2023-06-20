@@ -35,7 +35,8 @@ class PostTest {
 
         Post thisIsContent = Post.builder()
             .member(getUser())
-            .content("this is content")
+            .content("this is content #sdaf")
+            .hashtags(null)
             .likeCnt(123L)
             .dislikeCnt(2L)
             .postImages(imageUrls)
