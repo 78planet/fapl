@@ -24,9 +24,9 @@ public class Hashtag {
     @OneToMany(mappedBy = "hashtag")
     private List<PostHashtag> postHashTags = new ArrayList<>();
 
-    private String hashtag;
+    private String name;
 
     public Hashtag(String hashtag) {
-        this.hashtag = hashtag;
+        this.name = hashtag;
     }
 }

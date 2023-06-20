@@ -9,6 +9,7 @@ import com.will.fapl.member.application.dto.SignupRequest;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
 import com.will.fapl.post.application.dto.request.EditPostRequest;
 import com.will.fapl.post.application.dto.response.PostResponse;
+import com.will.fapl.post.application.dto.response.PostSearchResponse;
 import com.will.fapl.util.AcceptanceTest;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 class PostControllerTest extends AcceptanceTest {
 
@@ -106,6 +108,28 @@ class PostControllerTest extends AcceptanceTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
+    @DisplayName("검색 API 성공")
+    @Test
+    void search_success() throws Exception {
+        //given
+        int savePostSize = 10;
+        for (int i = 0; i < savePostSize; i++) {
+            게시글_작성(accessToken, createPostRequest());
+        }
+
+        //when
+        MockHttpServletResponse response = mockMvc.perform(get("/api/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, accessToken)
+                .param("hashtag", "hello"))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andDo(print())
+            .andReturn().getResponse();
+
+        //then
+        List<PostSearchResponse> posts = getResponseList(response, PostSearchResponse.class);
+        assertThat(posts).hasSize(savePostSize);
+    }
 
     private Long getPostId(MockHttpServletResponse response) {
         String[] locationHeader = response.getHeader(HttpHeaders.LOCATION).split("/");

@@ -16,9 +16,9 @@ public class HashtagService {
 
     @Transactional
     public List<Hashtag> createHashtag(List<String> hashtags) {
-        List<Hashtag> existingHashtags = hashtagRepository.findAllByHashtagIn(hashtags);
+        List<Hashtag> existingHashtags = hashtagRepository.findAllByNameIn(hashtags);
         List<Hashtag> newHashtags = hashtags.stream()
-            .filter(hashtag -> existingHashtags.stream().noneMatch(h -> h.getHashtag().equals(hashtag)))
+            .filter(hashtag -> existingHashtags.stream().noneMatch(h -> h.getName().equals(hashtag)))
             .map(Hashtag::new)
             .toList();
 

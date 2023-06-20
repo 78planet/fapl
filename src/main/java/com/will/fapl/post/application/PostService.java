@@ -5,6 +5,8 @@ import com.will.fapl.hashtag.domain.Hashtag;
 import com.will.fapl.member.domain.Member;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
 import com.will.fapl.post.application.dto.request.EditPostRequest;
+import com.will.fapl.post.application.dto.request.PostFilterCondition;
+import com.will.fapl.post.application.dto.response.PostSearchResponse;
 import com.will.fapl.post.domain.Post;
 import com.will.fapl.post.domain.PostRepository;
 import com.will.fapl.post.exception.NotFoundPostException;
@@ -29,6 +31,11 @@ public class PostService {
     public Post getPostWithFetchById(Long postId) {
         return postRepository.findPostWithFetchById(postId)
             .orElseThrow(() -> new NotFoundPostException(ErrorCode.NOT_FOUND_POST, postId));
+    }
+
+    public List<PostSearchResponse> searchPostsByHashtag(PostFilterCondition postFilterCondition) {
+        List<Post> posts = postRepository.findPostsByHashtag(postFilterCondition);
+        return PostSearchResponse.from(posts);
     }
 
     @Transactional

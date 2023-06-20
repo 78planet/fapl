@@ -16,7 +16,7 @@ CREATE TABLE member
 
 CREATE TABLE follow
 (
-    id                bigint NOT NULL auto_increment,
+    id                  bigint NOT NULL auto_increment,
     following_member_id bigint NOT NULL,
     follower_member_id  bigint NOT NULL,
     PRIMARY KEY (id)
@@ -34,7 +34,7 @@ CREATE TABLE post
 (
     id          bigint   NOT NULL auto_increment,
     content     text,
-    member_id     bigint   NOT NULL,
+    member_id   bigint   NOT NULL,
     like_cnt    bigint   NOT NULL,
     dislike_cnt bigint   NOT NULL,
     created_at  datetime NOT NULL,
@@ -49,8 +49,8 @@ ALTER TABLE post
 
 CREATE TABLE post_like_member
 (
-    id      bigint NOT NULL auto_increment,
-    post_id bigint NOT NULL,
+    id        bigint NOT NULL auto_increment,
+    post_id   bigint NOT NULL,
     member_id bigint NOT NULL,
     PRIMARY KEY (id)
 ) engine = InnoDB
@@ -62,8 +62,8 @@ ALTER TABLE post_like_member
 
 CREATE TABLE post_dislike_member
 (
-    id      bigint NOT NULL auto_increment,
-    post_id bigint NOT NULL,
+    id        bigint NOT NULL auto_increment,
+    post_id   bigint NOT NULL,
     member_id bigint NOT NULL,
     PRIMARY KEY (id)
 ) engine = InnoDB
@@ -88,8 +88,8 @@ ALTER TABLE post_image
 
 CREATE TABLE hashtag
 (
-    id      bigint       NOT NULL auto_increment,
-    hashtag varchar(255) NOT NULL,
+    id    bigint       NOT NULL auto_increment,
+    name varchar(255) NOT NULL,
     PRIMARY KEY (id)
 ) engine = InnoDB
   default charset = utf8mb4;
@@ -115,7 +115,7 @@ CREATE TABLE comment
 (
     id        bigint       NOT NULL auto_increment,
     post_id   bigint       NOT NULL,
-    member_id   bigint       NOT NULL,
+    member_id bigint       NOT NULL,
     content   varchar(255) NOT NULL,
     hierarchy bigint       NOT NULL,
     group_id  bigint       NOT NULL,

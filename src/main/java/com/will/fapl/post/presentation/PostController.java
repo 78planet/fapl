@@ -9,10 +9,13 @@ import com.will.fapl.common.model.ApiResponse;
 import com.will.fapl.post.application.PostFacade;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
 import com.will.fapl.post.application.dto.request.EditPostRequest;
+import com.will.fapl.post.application.dto.request.PostFilterCondition;
 import com.will.fapl.post.application.dto.response.PostResponse;
+import com.will.fapl.post.application.dto.response.PostSearchResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,6 +49,13 @@ public class PostController {
     public ResponseEntity<ApiResponse<PostResponse>> showPost(@PathVariable("postId") Long postId) {
         PostResponse postResponse = postFacade.getPost(postId);
         return ResponseEntity.ok(new ApiResponse<>(postResponse));
+    }
+
+    @Operation(summary = "게시글 해시태그 검색", description = "게시물 해시태그 검색 API입니다.")
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<PostSearchResponse>>> getPostsByHashtag(PostFilterCondition postFilterCondition) {
+        List<PostSearchResponse> postSearchResponses = postFacade.searchPosts(postFilterCondition);
+        return ResponseEntity.ok(new ApiResponse<>(postSearchResponses));
     }
 
     @Operation(summary = "게시글 수정", description = "게시글 수정 API입니다.")
