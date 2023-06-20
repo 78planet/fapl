@@ -8,7 +8,9 @@ import com.will.fapl.member.application.MemberService;
 import com.will.fapl.member.domain.Member;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
 import com.will.fapl.post.application.dto.request.EditPostRequest;
+import com.will.fapl.post.application.dto.request.PostFilterCondition;
 import com.will.fapl.post.application.dto.response.PostResponse;
+import com.will.fapl.post.application.dto.response.PostSearchResponse;
 import com.will.fapl.post.domain.Post;
 import com.will.fapl.post.exception.PostNotBelongToCoupleException;
 import java.util.Arrays;
@@ -44,6 +46,11 @@ public class PostFacade {
         return PostResponse.from(post);
     }
 
+
+    public List<PostSearchResponse> searchPosts(PostFilterCondition postFilterCondition) {
+        return postService.searchPostsByHashtag(postFilterCondition);
+    }
+
     @Transactional
     public Long modifyPost(LoginMember loginMember, Long postId, EditPostRequest editPostRequest) {
         memberService.getMemberById(loginMember.getId());
@@ -72,4 +79,5 @@ public class PostFacade {
             .map(word -> word.replaceAll("[^\\p{L}\\p{N}]", ""))
             .collect(Collectors.toList());
     }
+
 }

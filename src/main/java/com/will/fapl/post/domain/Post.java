@@ -64,13 +64,18 @@ public class Post extends BaseEntity {
         this.member = member;
         this.member.addPost(this);
         this.content = content;
-        this.hashTagList = new PostHashTagList(convertToHashtags(hashtags));
         this.likeCnt = likeCnt;
         this.dislikeCnt = dislikeCnt;
         this.postImageList = new PostImageList(convertToPostImages(postImages));
         this.comments = comments;
         this.likedMembers = postLikeMembers;
         this.dislikedMembers = postDislikeMembers;
+
+        if (hashtags == null) {
+            this.hashTagList = null;
+        } else {
+            this.hashTagList = new PostHashTagList(convertToHashtags(hashtags));
+        }
     }
 
     private List<PostHashtag> convertToHashtags(List<Hashtag> hashtags) {
@@ -79,11 +84,14 @@ public class Post extends BaseEntity {
             .toList();
     }
 
-
     private List<PostImage> convertToPostImages(List<String> imageUrls) {
         return imageUrls.stream()
             .map(imageUrl -> new PostImage(this, imageUrl))
             .collect(toList());
+    }
+
+    public String getThumbnailUrl() {
+        return postImageList.getThumbnailUrl();
     }
 
     public void changeContent(String content) {
