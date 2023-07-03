@@ -2,8 +2,9 @@ package com.will.fapl.member.domain;
 
 import com.will.fapl.common.exception.ErrorCode;
 import com.will.fapl.common.model.BaseEntity;
+import com.will.fapl.like.domain.PostDislikeMember;
+import com.will.fapl.like.domain.PostLikeMember;
 import com.will.fapl.member.exception.LoginFailedException;
-import com.will.fapl.post.domain.PostLikeMember;
 import com.will.fapl.point.domain.Point;
 import com.will.fapl.post.domain.Post;
 import com.will.fapl.member.domain.converter.GradeConverter;
@@ -18,7 +19,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,7 +55,10 @@ public class Member extends BaseEntity {
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
-    private List<PostLikeMember> postLikeMembers = new ArrayList<>();
+    private Set<PostLikeMember> postLikeMembers = new HashSet<>();
+
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private Set<PostDislikeMember> postDislikeMembers = new HashSet<>();
 
     @Embedded
     private Point point;
@@ -83,8 +89,20 @@ public class Member extends BaseEntity {
         this.posts.add(post);
     }
 
-    public void changePoint(Point point) {
-        this.point = point;
+    public void addLikePoint() {
+        this.point.addLikePoint();
+    }
+
+    public void addDislikePoint() {
+        this.point.addDislikePoint();
+    }
+
+    public void cancelLikePoint() {
+        this.point.cancelLikePoint();
+    }
+
+    public void cancelDislikePoint() {
+        this.point.cancelDislikePoint();
     }
 
     public void checkPassword(PasswordEncoder passwordEncoder, String password) {

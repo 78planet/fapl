@@ -28,7 +28,9 @@ public enum ErrorCode {
 
     // Post
     NOT_FOUND_POST(HttpStatus.NOT_FOUND, "P001", "존재하지 않는 게시글입니다."),
-    NOT_BELONG_TO_COUPLE(HttpStatus.FORBIDDEN, "P002", "해당하는 사용자의 게시물이 아닙니다.");
+    NOT_BELONG_TO_COUPLE(HttpStatus.FORBIDDEN, "P002", "해당하는 사용자의 게시물이 아닙니다."),
+    ALREADY_LIKED_POST(HttpStatus.BAD_REQUEST, "P003", "이미 좋아요를 누른 게시글입니다."),
+    ALREADY_DISLIKED_POST(HttpStatus.BAD_REQUEST, "P004", "이미 싫어요를 누른 게시글입니다.");
 
     private final HttpStatus status;
     private final String code;

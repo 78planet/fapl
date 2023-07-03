@@ -13,11 +13,29 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Point {
 
+    private final Long LIKE_POINT = 50L;
+    private final Long DISLIKE_POINT = 10L;
+
     @Column(name = "point", nullable = false)
     private Long value;
 
     public Point(Long value) {
-        checkArgument(0 <= value, "point는 양수만 가능합니다.");
         this.value = value;
+    }
+
+    public void addLikePoint() {
+        this.value = this.value + LIKE_POINT;
+    }
+
+    public void cancelLikePoint() {
+        this.value = this.value - LIKE_POINT;
+    }
+
+    public void addDislikePoint() {
+        this.value = this.value - DISLIKE_POINT;
+    }
+
+    public void cancelDislikePoint() {
+        this.value = this.value + DISLIKE_POINT;
     }
 }

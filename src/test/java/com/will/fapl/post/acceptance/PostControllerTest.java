@@ -3,6 +3,7 @@ package com.will.fapl.post.acceptance;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.will.fapl.member.application.dto.SignupRequest;
@@ -129,6 +130,86 @@ class PostControllerTest extends AcceptanceTest {
         //then
         List<PostSearchResponse> posts = getResponseList(response, PostSearchResponse.class);
         assertThat(posts).hasSize(savePostSize);
+    }
+
+    @DisplayName("post 좋아요 성공")
+    @Test
+    void post_like_success() throws Exception {
+        // given
+        CreatePostRequest createRequest = createPostRequest();
+        MockHttpServletResponse createPostResponse = 게시글_작성(accessToken, createRequest);
+        Long postId = getPostId(createPostResponse);
+
+        // when
+        MockHttpServletResponse response = 게시글_좋아요(accessToken, postId);
+
+        // then
+        assertAll(
+            () -> assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value())
+        );
+    }
+
+    @DisplayName("post 좋아요 취소 성공")
+    @Test
+    void cancel_post_like_success() throws Exception {
+        // given
+        CreatePostRequest createRequest = createPostRequest();
+        MockHttpServletResponse createPostResponse = 게시글_작성(accessToken, createRequest);
+        Long postId = getPostId(createPostResponse);
+
+        게시글_좋아요(accessToken, postId);
+
+        // when
+        MockHttpServletResponse response = mockMvc.perform(post("/api/posts/like/cancel/" + postId)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, accessToken))
+            .andDo(print())
+            .andReturn().getResponse();
+
+        // then
+        assertAll(
+            () -> assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value())
+        );
+    }
+
+    @DisplayName("post 싫어요 성공")
+    @Test
+    void post_dislike_success() throws Exception {
+        // given
+        CreatePostRequest createRequest = createPostRequest();
+        MockHttpServletResponse createPostResponse = 게시글_작성(accessToken, createRequest);
+        Long postId = getPostId(createPostResponse);
+
+        // when
+        MockHttpServletResponse response = 게시글_싫어요(accessToken, postId);
+
+        // then
+        assertAll(
+            () -> assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value())
+        );
+    }
+
+    @DisplayName("post 싫어요 취소 성공")
+    @Test
+    void cancel_post_dislike_success() throws Exception {
+        // given
+        CreatePostRequest createRequest = createPostRequest();
+        MockHttpServletResponse createPostResponse = 게시글_작성(accessToken, createRequest);
+        Long postId = getPostId(createPostResponse);
+
+        게시글_싫어요(accessToken, postId);
+
+        // when
+        MockHttpServletResponse response = mockMvc.perform(post("/api/posts/dislike/cancel/" + postId)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, accessToken))
+            .andDo(print())
+            .andReturn().getResponse();
+
+        // then
+        assertAll(
+            () -> assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value())
+        );
     }
 
     private Long getPostId(MockHttpServletResponse response) {
