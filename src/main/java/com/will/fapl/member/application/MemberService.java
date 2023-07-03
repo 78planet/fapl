@@ -79,4 +79,9 @@ public class MemberService {
         return memberRepository.findById(memberId)
             .orElseThrow(() -> new NotFoundMemberException(ErrorCode.NOT_FOUND_MEMBER, memberId));
     }
+
+    public Member getMemberWithFetchById(Long memberId) {
+        return memberRepository.findMemberWithFetchById(memberId)
+            .orElseThrow(() -> new NotFoundMemberException(ErrorCode.NOT_FOUND_MEMBER, memberId));
+    }
 }

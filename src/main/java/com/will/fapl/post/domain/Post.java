@@ -7,7 +7,11 @@ import com.will.fapl.common.model.BaseEntity;
 import com.will.fapl.hashtag.domain.Hashtag;
 import com.will.fapl.image.domain.PostImage;
 import com.will.fapl.image.domain.PostImageList;
+import com.will.fapl.like.domain.DislikeCnt;
+import com.will.fapl.like.domain.LikeCnt;
 import com.will.fapl.member.domain.Member;
+import com.will.fapl.like.domain.PostDislikeMember;
+import com.will.fapl.like.domain.PostLikeMember;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,9 +42,11 @@ public class Post extends BaseEntity {
 
     private String content;
 
-    private Long likeCnt;
+    @Embedded
+    private LikeCnt likeCnt;
 
-    private Long dislikeCnt;
+    @Embedded
+    private DislikeCnt dislikeCnt;
 
     @Embedded
     private PostImageList postImageList;
@@ -64,8 +70,8 @@ public class Post extends BaseEntity {
         this.member = member;
         this.member.addPost(this);
         this.content = content;
-        this.likeCnt = likeCnt;
-        this.dislikeCnt = dislikeCnt;
+        this.likeCnt = new LikeCnt(likeCnt);
+        this.dislikeCnt = new DislikeCnt(dislikeCnt);
         this.postImageList = new PostImageList(convertToPostImages(postImages));
         this.comments = comments;
         this.likedMembers = postLikeMembers;
@@ -108,5 +114,21 @@ public class Post extends BaseEntity {
 
     public boolean isWrittenBy(Member member) {
         return this.member.isSame(member);
+    }
+
+    public void plusLikeCnt() {
+        this.likeCnt.plus();
+    }
+
+    public void minusLikeCnt() {
+        this.likeCnt.minus();
+    }
+
+    public void plusDislikeCnt() {
+        this.dislikeCnt.plus();
+    }
+
+    public void minusDislikeCnt() {
+        this.dislikeCnt.minus();
     }
 }

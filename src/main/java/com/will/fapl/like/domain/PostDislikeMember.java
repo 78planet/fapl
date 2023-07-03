@@ -1,6 +1,7 @@
-package com.will.fapl.post.domain;
+package com.will.fapl.like.domain;
 
 import com.will.fapl.member.domain.Member;
+import com.will.fapl.post.domain.Post;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,4 +28,9 @@ public class PostDislikeMember {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public PostDislikeMember(Member member, Post post) {
+        this.member = member;
+        this.post = post;
+    }
 }

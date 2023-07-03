@@ -39,8 +39,8 @@ public class PostResponse {
             .id(post.getId())
             .member(MemberResponse.from(post.getMember()))
             .content(post.getContent())
-            .likeCnt(post.getLikeCnt())
-            .dislikeCnt(post.getDislikeCnt())
+            .likeCnt(post.getLikeCnt().getValue())
+            .dislikeCnt(post.getDislikeCnt().getValue())
             .postImageList(post.getPostImageList().getImageUrls())
             .build();
     }

@@ -44,8 +44,8 @@ public class PostSearchResponse {
             post.getId(),
             post.getThumbnailUrl(),
             post.getCreatedAt(),
-            post.getLikeCnt(),
-            post.getDislikeCnt()
+            post.getLikeCnt().getValue(),
+            post.getDislikeCnt().getValue()
         )).collect(Collectors.toList());
     }
 }

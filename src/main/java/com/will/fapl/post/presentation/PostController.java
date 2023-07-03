@@ -76,4 +76,51 @@ public class PostController {
         postFacade.removePost(loginMember.getId(), postId);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "게시글 좋아요", description = "게시글 좋아요 API입니다.")
+    @LoginRequired
+    @PostMapping("/like/{postId}")
+    public ResponseEntity<ApiResponse<Void>> likePost(@Login LoginMember loginMember,
+                                                      @PathVariable("postId") Long postId) {
+        postFacade.likePost(loginMember.getId(), postId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "게시글 좋아요 취소", description = "게시글 좋아요 취소 API입니다.")
+    @LoginRequired
+    @PostMapping("/like/cancel/{postId}")
+    public ResponseEntity<ApiResponse<Void>> cancelLikePost(@Login LoginMember loginMember,
+                                                            @PathVariable("postId") Long postId) {
+        postFacade.cancelLike(loginMember.getId(), postId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "게시글 싫어요", description = "게시글 싫어요 API입니다.")
+    @LoginRequired
+    @PostMapping("/dislike/{postId}")
+    public ResponseEntity<ApiResponse<Void>> dislikePost(@Login LoginMember loginMember,
+                                                         @PathVariable("postId") Long postId) {
+        postFacade.dislikePost(loginMember.getId(), postId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "게시글 싫어요 취소", description = "게시글 싫어요 취소 API입니다.")
+    @LoginRequired
+    @PostMapping("/dislike/cancel/{postId}")
+    public ResponseEntity<ApiResponse<Void>> cancelDislikePost(@Login LoginMember loginMember,
+                                                               @PathVariable("postId") Long postId) {
+        postFacade.cancelDislike(loginMember.getId(), postId);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @Operation(summary = "좋아요 게시글 리스트", description = "좋아요 게시글 리스트 API입니다.")
+    @LoginRequired
+    @GetMapping("/like")
+    public ResponseEntity<ApiResponse<List<PostSearchResponse>>> likePostList(@Login LoginMember loginMember,
+                                                                                PostFilterCondition postFilterCondition) {
+        List<PostSearchResponse> postSearchResponses = postFacade.getLikedPostList(loginMember.getId(), postFilterCondition);
+        return ResponseEntity.ok().build();
+    }
+
 }
