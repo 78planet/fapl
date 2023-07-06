@@ -1,0 +1,3 @@
+[submodule "src/main/resources/fapl-config"]
+	path = src/main/resources/fapl-config
+	url = git@github.com:78planet/fapl-config.git
