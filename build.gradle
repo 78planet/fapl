@@ -73,3 +73,10 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.register('copySubmodule', Copy) {
+	from 'src/main/resources/fapl-config'
+	include '*.yml'
+	into './src/main/resources'
+}
+
