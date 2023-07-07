@@ -6,7 +6,7 @@
   <include resource="appender/file-error-appender.xml"/>
   <include resource="appender/file-db-appender.xml"/>
 
-  <springProfile name="local,test">
+  <springProfile name="dev,local,test">
     <logger name="com.will.fapl" level="DEBUG">
       <appender-ref ref="console-appender"/>
     </logger>
