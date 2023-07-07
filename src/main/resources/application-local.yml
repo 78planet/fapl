@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/fapl
-    username: will
-    password: '0000'
+    username: fapl
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   flyway:
