@@ -59,7 +59,7 @@ jobs:
         run: |
           mkdir deploy
           cp ./appspec.yml ./deploy/
-          cp ./Dockerfile-dev ./deploy/
+          cp ./Dockerfile-dev ./deploy/Dockerfile
           cp ./scripts/*.sh ./deploy/
           cp ./build/libs/*.jar ./deploy/
           zip -r -qq -j ./$FAPL_DEV_BUILD_ZIP ./deploy
