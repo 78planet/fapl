@@ -9,16 +9,6 @@ spring:
     enabled: true
     baseline-on-migrate: true
 
-  jpa:
-    generate-ddl: false
-    open-in-view: false
-    properties:
-      hibernate:
-        format_sql: true
-        default_batch_fetch_size: 1000
-    hibernate:
-      ddl-auto: validate
-
   data:
     redis:
       host: localhost
@@ -33,10 +23,3 @@ jwt:
   refresh-token:
     expire-length: 3600000
 
-springdoc:
-  swagger-ui:
-    path: /api-docs
-    operations-sorter: method
-    tags-sorter: alpha
-  api-docs:
-    path: /api-docs/json
