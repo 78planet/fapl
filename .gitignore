@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### Submodules ###
-src/main/resources/fapl-config/*
+src/main/resources/application-dev.yml
