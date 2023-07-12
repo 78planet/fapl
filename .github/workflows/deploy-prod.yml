@@ -1,4 +1,4 @@
-name: Deploy to Development Server
+name: Deploy to Production Server
 
 env:
   S3_BUCKET_NAME: fapl-project
