@@ -1,8 +1,10 @@
 plugins {
 	id 'java'
+	id 'jacoco'
+	id "org.sonarqube" version "3.4.0.2513"
 	id 'org.springframework.boot' version '3.1.0'
 	id 'io.spring.dependency-management' version '1.1.0'
-	id "org.flywaydb.flyway" version "9.18.0"
+	id "org.flywaydb.flyway" version "9.4.0"
 }
 
 group = 'com.will'
@@ -72,4 +74,101 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+processResources.dependsOn('copySubmodule')
+
+tasks.register('copySubmodule', Copy) {
+	from 'src/main/resources/fapl-config'
+	include '*.yml'
+	into './src/main/resources'
+}
+
+test {
+	finalizedBy 'jacocoTestReport'
+}
+
+// jacoco
+jacoco {
+	toolVersion = "0.8.8"
+}
+
+jacocoTestReport {
+	reports {
+		html.enabled true
+		xml.enabled true
+	}
+
+	def Qdomains = []
+	for (qPattern in "**/QA".."**/QZ") {
+		Qdomains.add(qPattern + "*")
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it,
+					exclude: [
+							"**/*FaplApplication*",
+							'**/*Fake*',
+							'**/*Health*',
+							'**/*Request*',
+							'**/*Response*',
+							'**/*Dto*',
+							'**/*Exception*',
+							'**/common*',
+					] + Qdomains)
+		}))
+	}
+
+	finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+	def Qdomains = []
+	for (qPattern in '*.QA'..'*.QZ') {
+		Qdomains.add(qPattern + '*')
+	}
+
+
+	violationRules {
+		rule {
+			enabled = true
+			element = 'CLASS'
+
+			limit {
+				counter = 'LINE'
+				value = 'COVEREDRATIO'
+				minimum = 0.00
+			}
+
+			limit {
+				counter = 'METHOD'
+				value = 'COVEREDRATIO'
+				minimum = 0.00
+			}
+
+			excludes = [
+					"**.*FaplApplication*",
+					'**.*Fake*',
+					'**.*Health*',
+					'**.*Request*',
+					'**.*Response*',
+					'**.*Dto*',
+					'**.*Interceptor*',
+					'**.*Exception*',
+					'**.*common*'
+			] + Qdomains
+		}
+	}
+}
+
+
+sonarqube {
+	properties {
+		property "sonar.projectKey", "fapl"
+		property "sonar.organization", "78planet"
+		property "sonar.host.url", "https://sonarcloud.io"
+		property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+		property "sonar.exclusions", "**.*Dto*, **.*common*, **.*Exception*, **.*Response*, **.*Request*"
+	}
 }

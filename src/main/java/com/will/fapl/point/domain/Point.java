@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Point {
 
-    private final Long LIKE_POINT = 50L;
-    private final Long DISLIKE_POINT = 10L;
+    private static final Long LIKE_POINT = 50L;
+    private static final Long DISLIKE_POINT = 10L;
 
     @Column(name = "point", nullable = false)
     private Long value;
