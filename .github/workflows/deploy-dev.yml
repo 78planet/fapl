@@ -7,23 +7,15 @@ env:
   CODEDEPLOY_GROUP: fapl-dev-group
   FAPL_DEV_BUILD_ZIP: fapl-dev-build.zip
 
-#on:
-#  pull_request:
-#    branches:
-#      - develop
-#    types:
-#      - closed
-
 on:
   workflow_dispatch:
     inputs:
       branch:
-        description: '22-cicd'
+        description: 'develop'
         required: true
 
 jobs:
   deploy:
-#    if: ${{ (github.event.pull_request.merged == true) }}
     runs-on: ubuntu-latest
 
     steps:
