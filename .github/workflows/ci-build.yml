@@ -1,21 +1,12 @@
 name: CI fapl Build
 
-#on:
-#  pull_request:
-#    branches:
-#      - main
-#      - develop
-
 on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: '22-cicd'
-        required: true
+  pull_request:
+    types:
+      - opened
 
 jobs:
   build:
-#    if: ${{ (github.event.pull_request.merged == true) }}
     runs-on: ubuntu-latest
 
     steps:
