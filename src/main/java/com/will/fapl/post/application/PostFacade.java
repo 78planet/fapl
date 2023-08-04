@@ -14,8 +14,8 @@ import com.will.fapl.post.application.dto.request.PostFilterCondition;
 import com.will.fapl.post.application.dto.response.PostResponse;
 import com.will.fapl.post.application.dto.response.PostSearchResponse;
 import com.will.fapl.post.domain.Post;
-import com.will.fapl.post.exception.AlreadyDislikedPost;
-import com.will.fapl.post.exception.AlreadyLikedPost;
+import com.will.fapl.post.exception.AlreadyDislikedPostException;
+import com.will.fapl.post.exception.AlreadyLikedPostException;
 import com.will.fapl.post.exception.PostNotBelongToCoupleException;
 import java.util.Arrays;
 import java.util.List;
@@ -89,7 +89,7 @@ public class PostFacade {
         // 2. 내가 이 post에 좋아요나 싫어요 반응이 있는지 확인.
         if (postLikeMemberService.isLikePost(member, post)) {
             // 2-1. 좋아요 반응이 이미 있으면 '이미 좋아요 눌렀습니다'
-            throw new AlreadyLikedPost(member.getId(), post.getId(), ErrorCode.ALREADY_LIKED_POST);
+            throw new AlreadyLikedPostException(member.getId(), post.getId(), ErrorCode.ALREADY_LIKED_POST);
 
         } else if (postDislikeMemberService.isDislikePost(member, post)) {
             // 2-2. 싫어요 반응이 이미 있으면 싫어요 반응을 삭제하고 좋아요 반응으로 수정.
@@ -125,7 +125,7 @@ public class PostFacade {
         // 2. 내가 이 post에 좋아요나 싫어요 반응이 있는지 확인.
         if (postDislikeMemberService.isDislikePost(member, post)) {
             // 2-1. 싫어요 반응이 이미 있으면 '이미 싫어요 눌렀습니다'
-            throw new AlreadyDislikedPost(member.getId(), post.getId(), ErrorCode.ALREADY_DISLIKED_POST);
+            throw new AlreadyDislikedPostException(member.getId(), post.getId(), ErrorCode.ALREADY_DISLIKED_POST);
 
         } else if (postLikeMemberService.isLikePost(member, post)) {
             // 2-2. 좋아요 반응이 이미 있으면 좋아요 반응을 삭제하고 싫어요 반응으로 수정.
