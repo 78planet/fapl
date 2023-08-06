@@ -11,7 +11,7 @@ import com.will.fapl.member.domain.MemberRepository;
 import com.will.fapl.post.application.dto.request.CreatePostRequest;
 import com.will.fapl.post.application.dto.request.EditPostRequest;
 import com.will.fapl.post.application.dto.response.PostResponse;
-import com.will.fapl.post.exception.AlreadyLikedPost;
+import com.will.fapl.post.exception.AlreadyLikedPostException;
 import com.will.fapl.post.exception.NotFoundPostException;
 import com.will.fapl.util.IntegrationTest;
 import com.will.fapl.util.fixture.TestMemberBuilder;
@@ -186,7 +186,7 @@ public class PostFacadeTest extends IntegrationTest {
 
         // then
         assertThatThrownBy(() -> postFacade.likePost(member.getId(), postId))
-            .isInstanceOf(AlreadyLikedPost.class)
+            .isInstanceOf(AlreadyLikedPostException.class)
             .hasMessageContaining("이미 좋아요를 누른 게시글입니다.");
     }
 
